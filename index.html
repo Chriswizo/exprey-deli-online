@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Exprey Deli Online logistics and shipment tracking">
+  <title>Exprey Deli Online Logistics</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="#"><span class="brand-mark">ED</span><span>EXPREY <b>DELI</b> ONLINE<small>LOGISTICS & DELIVERY</small></span></a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+  <nav id="nav"><a href="#services">Services</a><a href="#about">About</a><a href="#tracking">Track shipment</a><a class="nav-cta" href="#quote">Request a quote</a><a href="admin.html">Admin</a></nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">DELIVERY THAT KEEPS YOU MOVING</p>
+      <h1>Your goods.<br><span>Our commitment.</span></h1>
+      <p class="hero-copy">Dependable delivery and logistics support for parcels, businesses, and freight. Follow shipment updates in one simple place.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#tracking">Track a shipment <span>→</span></a><a class="button button-ghost" href="#services">Explore services</a></div>
+      <div class="hero-proof"><span class="proof-dot"></span> Clear updates · Helpful support · Reliable service</div>
+    </div>
+    <div class="hero-art" aria-label="Illustration of a delivery parcel">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="parcel"><div class="parcel-top"></div><div class="parcel-tape"></div><div class="parcel-label"><b>EXPRESS</b><small>HANDLE WITH CARE</small><span>▥ ▥ ▥</span></div></div>
+      <div class="float-card card-top"><span class="float-icon">✓</span><span><b>Shipment updates</b><small>Every step, clearly shown</small></span></div>
+      <div class="float-card card-bottom"><span class="float-icon pin">⌖</span><span><b>Door-to-door</b><small>Pickup to destination</small></span></div>
+      <div class="art-caption">MOVING WHAT MATTERS</div>
+    </div>
+  </section>
+  <section class="tracking-section" id="tracking">
+    <div class="tracking-intro"><p class="eyebrow">SHIPMENT VISIBILITY</p><h2>Where is your<br>shipment?</h2><p>Enter the tracking number provided by Exprey Deli Online to view the latest recorded status.</p></div>
+    <form id="trackForm" class="tracking-form"><label for="trackingNumber">Tracking number</label><div class="tracking-input-row"><input id="trackingNumber" name="trackingNumber" placeholder="e.g. ED-100024" required autocomplete="off"><button class="button button-primary" type="submit">Track package →</button></div><small>Tracking only displays shipments recorded in our system.</small><div id="trackingResult" aria-live="polite"></div></form>
+  </section>
+  <section class="section" id="services"><div class="section-heading"><div><p class="eyebrow">WHAT WE DO</p><h2>Logistics made simpler.</h2></div><p>Flexible delivery support built around your shipment and your schedule.</p></div>
+    <div class="service-grid">
+      <article class="service-card"><div class="service-icon">↗</div><h3>Express delivery</h3><p>Time-conscious parcel delivery with clear status updates from dispatch to arrival.</p><a href="#quote">Ask about delivery <span>→</span></a></article>
+      <article class="service-card"><div class="service-icon">▤</div><h3>Freight & cargo</h3><p>Coordinated transport options for larger consignments and business shipments.</p><a href="#quote">Discuss your freight <span>→</span></a></article>
+      <article class="service-card"><div class="service-icon">⌖</div><h3>Pickup & last mile</h3><p>Pickup and final-mile delivery coordination for local delivery needs.</p><a href="#quote">Plan a delivery <span>→</span></a></article>
+    </div>
+  </section>
+  <section class="about-section" id="about"><div class="about-graphic"><div class="route-line"></div><div class="route-point point-a">A</div><div class="route-point point-b">B</div><div class="route-box"><span>ED</span><b>Every delivery<br>has a destination.</b><small>Let's help you get there.</small></div></div><div class="about-copy"><p class="eyebrow">THE EXPREY DELI ONLINE APPROACH</p><h2>Service built around keeping you informed.</h2><p>Good logistics is about more than moving a package. It's about dependable communication, thoughtful coordination, and knowing what happens next.</p><ul><li><span>✓</span> Simple shipment status updates</li><li><span>✓</span> Support for individual and business needs</li><li><span>✓</span> One place to check recorded tracking details</li></ul><a class="button button-dark" href="#quote">Talk to our team →</a></div></section>
+  <section class="quote-section" id="quote"><div><p class="eyebrow">LET'S GET MOVING</p><h2>Need a delivery quote?</h2><p>Tell us a little about your shipment and our team can follow up.</p></div><form id="quoteForm" class="quote-form"><div class="form-two"><label>Your name<input name="name" required placeholder="Full name"></label><label>Email address<input name="email" type="email" required placeholder="you@example.com"></label></div><label>What do you need?<select name="service"><option>Express delivery</option><option>Freight & cargo</option><option>Pickup & last mile</option><option>Other</option></select></label><label>Shipment details<textarea name="details" rows="3" required placeholder="Pickup, destination, package size, and timing"></textarea></label><button class="button button-primary" type="submit">Prepare quote request →</button><p class="form-note" id="quoteMessage">This starter form opens your email app; configure the contact email in app.js.</p></form></section>
+</main>
+<footer><a class="brand footer-brand" href="#"><span class="brand-mark">ED</span><span>EXPREY <b>DELI</b> ONLINE<small>LOGISTICS & DELIVERY</small></span></a><p>Moving what matters, with care.</p><div><a href="#services">Services</a><a href="#tracking">Track shipment</a><a href="admin.html">Admin</a></div><small>© <span id="year"></span> Exprey Deli Online. Replace placeholder contact and company details before launch.</small></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script>
+</body></html>

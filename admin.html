@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Exprey Deli Online — Admin</title><link rel="stylesheet" href="styles.css"></head><body class="admin-body">
+<div class="admin-wrap"><div class="admin-top"><a class="brand" href="index.html"><span class="brand-mark">ED</span><span>EXPREY <b>DELI</b> ONLINE<small>SHIPMENT ADMIN</small></span></a><a href="index.html">← View website</a></div>
+<div id="setupNotice" class="notice">Admin setup required: connect a Supabase project, run <b>supabase-schema.sql</b>, and create an admin user in Supabase Authentication. This page will not manage real shipments until configured. Demo tracking numbers are ED-100024 and ED-100025.</div>
+<section id="loginPanel" class="login-box"><h1>Admin sign in</h1><p>Sign in with the admin account you create in Supabase Authentication.</p><form id="loginForm"><label>Email<input id="adminEmail" type="email" required autocomplete="username"></label><label>Password<input id="adminPassword" type="password" required autocomplete="current-password"></label><button class="button button-primary" type="submit">Sign in →</button></form><div id="loginMessage" class="form-note" aria-live="polite"></div></section>
+<section id="dashboard" class="hidden">
+<div class="admin-panel"><div class="admin-top"><div><h1>Shipment dashboard</h1><p class="form-note">Create shipments and update delivery status.</p></div><button class="button button-ghost" id="logoutBtn">Sign out</button></div>
+<div id="adminMessage" class="notice">Connected dashboard.</div></div>
+<div class="admin-panel"><h2 id="editorTitle">Add a shipment</h2><form id="shipmentForm"><div class="admin-grid">
+<label>Tracking number<input name="tracking_number" required placeholder="ED-100026"></label>
+<label>Recipient name<input name="recipient" placeholder="Customer name"></label>
+<label>Origin<input name="origin" required placeholder="Pickup city"></label>
+<label>Destination<input name="destination" required placeholder="Delivery city"></label>
+<label>Status<select name="status"><option>Shipment Created</option><option>Preparing</option><option>Picked Up</option><option>In Transit</option><option>Out for Delivery</option><option>Delivered</option><option>Exception</option></select></label>
+<label>Estimated delivery<input name="estimated_delivery" type="date"></label>
+<label class="wide">Latest update / notes<textarea name="notes" rows="2" placeholder="Customer-facing shipment update"></textarea></label>
+</div><div class="admin-actions"><button class="button button-primary" type="submit">Save shipment →</button><button class="button button-ghost" id="cancelEdit" type="button">Clear form</button></div></form></div>
+<div class="admin-panel"><h2>All shipments</h2><div class="table-wrap"><table><thead><tr><th>Tracking no.</th><th>Recipient</th><th>Route</th><th>Status</th><th>Actions</th></tr></thead><tbody id="shipmentsTable"><tr><td colspan="5">Loading…</td></tr></tbody></table></div></div>
+</section></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="admin.js"></script></body></html>

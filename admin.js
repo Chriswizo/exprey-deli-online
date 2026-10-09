@@ -1,0 +1,22 @@
+let client=null, editing=null;
+const $=id=>document.getElementById(id);
+const configured=()=>window.APP_CONFIG?.SUPABASE_URL&&window.APP_CONFIG?.SUPABASE_ANON_KEY&&window.supabase;
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function message(txt,error=false){$('adminMessage').textContent=txt;$('adminMessage').className='notice'+(error?' error':'');}
+function resetForm(){editing=null;$('shipmentForm').reset();$('editorTitle').textContent='Add a shipment';}
+function formData(){const f=new FormData($('shipmentForm'));return {tracking_number:f.get('tracking_number').trim(),recipient:f.get('recipient').trim(),origin:f.get('origin').trim(),destination:f.get('destination').trim(),status:f.get('status'),estimated_delivery:f.get('estimated_delivery')||null,notes:f.get('notes').trim(),events:[]};}
+async function loadShipments(){
+ const {data,error}=await client.from('shipments').select('*').order('updated_at',{ascending:false});
+ if(error){$('shipmentsTable').innerHTML=`<tr><td colspan="5">${esc(error.message)}</td></tr>`;return;}
+ $('shipmentsTable').innerHTML=data.length?data.map(s=>`<tr><td><b>${esc(s.tracking_number)}</b></td><td>${esc(s.recipient)}</td><td>${esc(s.origin)} → ${esc(s.destination)}</td><td>${esc(s.status)}</td><td class="table-actions"><button data-edit="${esc(s.id)}">Edit</button><button data-delete="${esc(s.id)}">Delete</button></td></tr>`).join(''):'<tr><td colspan="5">No shipments yet. Add one above.</td></tr>';
+ $('shipmentsTable').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editShipment(data.find(s=>s.id===b.dataset.edit)));
+ $('shipmentsTable').querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteShipment(b.dataset.delete));
+}
+function editShipment(s){editing=s;$('editorTitle').textContent='Edit '+s.tracking_number;for(const [k,v] of Object.entries(s)){const field=$('shipmentForm').elements.namedItem(k);if(field&&k!=='events')field.value=v||'';}window.scrollTo({top:0,behavior:'smooth'});}
+async function deleteShipment(id){if(!confirm('Delete this shipment? This cannot be undone.'))return;const {error}=await client.from('shipments').delete().eq('id',id);if(error){message(error.message,true);return;}message('Shipment deleted.');await loadShipments();}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!configured()){$('loginMessage').textContent='First add your Supabase URL and anon key to config.js.';return;}client=window.supabase.createClient(window.APP_CONFIG.SUPABASE_URL,window.APP_CONFIG.SUPABASE_ANON_KEY);const {error}=await client.auth.signInWithPassword({email:$('adminEmail').value,password:$('adminPassword').value});if(error){$('loginMessage').textContent=error.message;return;}await showDashboard();});
+async function showDashboard(){const {data:{session}}=await client.auth.getSession();if(!session)return;$('loginPanel').classList.add('hidden');$('dashboard').classList.remove('hidden');$('setupNotice').classList.add('hidden');message('Signed in. Shipment changes are stored in your Supabase database.');await loadShipments();}
+$('logoutBtn').onclick=async()=>{await client.auth.signOut();$('dashboard').classList.add('hidden');$('loginPanel').classList.remove('hidden');resetForm();};
+$('cancelEdit').onclick=resetForm;
+$('shipmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!client)return;const values=formData();const now=new Date().toISOString();if(editing){const oldEvents=Array.isArray(editing.events)?editing.events:[];const changed=editing.status!==values.status||editing.notes!==values.notes;values.events=changed?[...oldEvents,{status:values.status,at:now,notes:values.notes}]:oldEvents;values.updated_at=now;const {error}=await client.from('shipments').update(values).eq('id',editing.id);if(error){message(error.message,true);return;}message('Shipment updated.');}else{values.events=[{status:values.status,at:now,notes:values.notes}];values.updated_at=now;const {error}=await client.from('shipments').insert(values);if(error){message(error.message,true);return;}message('Shipment created.');}resetForm();await loadShipments();});
+if(configured()){client=window.supabase.createClient(window.APP_CONFIG.SUPABASE_URL,window.APP_CONFIG.SUPABASE_ANON_KEY);client.auth.getSession().then(({data})=>{if(data.session)showDashboard();});}
